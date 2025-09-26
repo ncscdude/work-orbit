@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+             xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+             xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+             xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             targetNamespace="http://example.com/bpmn">
+
+  <process id="BoardLifecycle" name="USSF Board Lifecycle" isExecutable="false">
+
+    <!-- Swimlanes -->
+    <laneSet id="laneSet_1">
+      <lane id="lane_admin" name="Board Admin"/>
+      <lane id="lane_candidate" name="Candidate"/>
+      <lane id="lane_voter" name="Voting Member"/>
+      <lane id="lane_system" name="System (STARS/Envision)"/>
+    </laneSet>
+
+    <!-- Flow -->
+    <startEvent id="start" name="Start"/>
+    <task id="defineBoardType" name="Define Board Type"/>
+    <task id="createBoardName" name="Create Board Name"/>
+    <task id="assignPanel" name="Assign Panel"/>
+    <task id="runStarsQuery" name="Run STARS Query"/>
+    <exclusiveGateway id="gw_soi" name="SOI Required?"/>
+    <task id="submitSOI" name="Submit SOI"/>
+    <task id="storeSOI" name="Store SOI Dataset"/>
+    <task id="inputScores" name="Input Scores"/>
+    <task id="resolveSplits" name="Resolve Splits"/>
+    <exclusiveGateway id="gw_scoreValid" name="Score Valid?"/>
+    <task id="storeScores" name="Store Scoring Dataset"/>
+    <task id="boardMatching" name="Board Matching"/>
+    <task id="boardResults" name="Board Results"/>
+    <task id="boardMessages" name="Board Messages"/>
+    <endEvent id="end" name="End"/>
+
+    <!-- Sequence Flow -->
+    <sequenceFlow id="flow1" sourceRef="start" targetRef="defineBoardType"/>
+    <sequenceFlow id="flow2" sourceRef="defineBoardType" targetRef="createBoardName"/>
+    <sequenceFlow id="flow3" sourceRef="createBoardName" targetRef="assignPanel"/>
+    <sequenceFlow id="flow4" sourceRef="assignPanel" targetRef="runStarsQuery"/>
+    <sequenceFlow id="flow5" sourceRef="runStarsQuery" targetRef="gw_soi"/>
+    <sequenceFlow id="flow6" sourceRef="gw_soi" targetRef="submitSOI"/>
+    <sequenceFlow id="flow7" sourceRef="submitSOI" targetRef="storeSOI"/>
+    <sequenceFlow id="flow8" sourceRef="gw_soi" targetRef="inputScores"/>
+    <sequenceFlow id="flow9" sourceRef="storeSOI" targetRef="inputScores"/>
+    <sequenceFlow id="flow10" sourceRef="inputScores" targetRef="resolveSplits"/>
+    <sequenceFlow id="flow11" sourceRef="resolveSplits" targetRef="gw_scoreValid"/>
+    <sequenceFlow id="flow12" sourceRef="gw_scoreValid" targetRef="storeScores"/>
+    <sequenceFlow id="flow13" sourceRef="storeScores" targetRef="boardMatching"/>
+    <sequenceFlow id="flow14" sourceRef="boardMatching" targetRef="boardResults"/>
+    <sequenceFlow id="flow15" sourceRef="boardResults" targetRef="boardMessages"/>
+    <sequenceFlow id="flow16" sourceRef="boardMessages" targetRef="end"/>
+
+  </process>
+</definitions>
